@@ -49,9 +49,34 @@ pipeline {
         }
     }
 
-    post {
-        success { echo 'Pipeline completed successfully!' }
-        failure { echo 'Pipeline failed. Check the logs.' }
-    }
+    #post {
+    #    success { echo 'Pipeline completed successfully!' }
+    #    failure { echo 'Pipeline failed. Check the logs.' }
+    #}
+     post {
+        success {
+            emailext (
+                subject: "SUCCESSFUL: Job '${env.JOB_NAME}' [Build #${env.BUILD_NUMBER}]",
+                body: """<p>The build completed successfully.</p>
+                       <p><strong>Job:</strong> ${env.JOB_NAME}<br/>
+                       <strong>Build:</strong> #${env.BUILD_NUMBER}<br/>
+                       <strong>URL:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
+                to: 'aparna.alapana@gmail.com',
+                mimeType: 'text/html'
+            )
+        }
+        
+        failure {
+            emailext (
+                subject: "FAILED: Job '${env.JOB_NAME}' [Build #${env.BUILD_NUMBER}]",
+                body: """<p>The build has failed. Please check the logs immediately.</p>
+                       <p><strong>Job:</strong> ${env.JOB_NAME}<br/>
+                       <strong>Build:</strong> #${env.BUILD_NUMBER}<br/>
+                       <strong>Console Logs:</strong> <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>""",
+                to: 'aparna.alapana@gmail.com',
+                mimeType: 'text/html'
+            )
+        }
+    } 
 }
 
