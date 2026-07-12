@@ -1,29 +1,57 @@
-# Student Registration System
 
-A simple **Flask** web application to manage student records with **MongoDB** as the backend database. Users can **add, view, update, and delete** student details.
+Set up a Jenkins pipeline that automates the testing and deployment of a simple Python web application.
 
----
+Requirements:
 
-## Features
+1. Setup:
 
-* List all students on the home page
-* Add a new student
-* Update existing student details
-* Delete a student with confirmation
-* Simple and responsive UI using Bootstrap
+   - Install Jenkins on a virtual machine or use a cloud-based Jenkins service.
+   Aparna Peri Answer(APA):  Yes, installed Jenkins on a virtual machine AWS ec2 instance. Attached the screenshots for the same.
 
----
+   - Configure Jenkins with Python and any necessary libraries.
+   (APA): Yes, configured jenkins with python and necessary libraries.
 
-## Tech Stack
+2. Source Code:
 
-* **Backend:** Python, Flask
-* **Database:** MongoDB (via Flask-PyMongo)
-* **Frontend:** HTML, Jinja2 templates, Bootstrap 5
-* **Environment Variables:** Managed via `.env` file
+  - Fork the provided Python web application repository on GitHub (https://github.com/mohanDevOps-arch/flask_Practice.git)
+   (APA):  Yes done, attached is the screenshot
 
----
+  - Clone the forked repository into your Jenkins server.
+  (APA):  Yes done, attached is the screenshot
 
-## Setup Instructions
+3. Jenkins Pipeline:
+
+   - Create a Jenkinsfile in the root of your Python application repository.
+  (APA):  Yes done, attached is the screenshot
+
+   - Define a pipeline with the following stages:
+  (APA):  Yes done, attached is the screenshot
+
+    - Build: Install dependencies using pip.
+
+    - Test: Run unit tests using a testing framework like pytest.
+
+    - Deploy: If tests pass, deploy the application to a staging environment.
+
+4. Triggers:
+
+   - Configure the pipeline to trigger a new build whenever changes are pushed to the main branch of the repository.
+   (APA):  Yes done, attached is the screenshot
+
+5. Notifications:
+
+   - Set up a notification system to alert via email when the build process fails or succeeds.
+   (APA):  Yes done, attached is the screenshot
+
+6. Documentation:
+
+   - Document the pipeline process and any prerequisites needed for the setup in a README.md file in the repository.
+
+7. Submission:
+
+   - Provide the URL to the GitHub repository with the Jenkinsfile and updated README.md.
+
+   - Include screenshots of the Jenkins pipeline showing the build, test, and deployment stages.
 
 ### 1. Clone the repository
 
@@ -71,64 +99,5 @@ SECRET_KEY=<your-secret-key>
 
 ```bash
 python app.py
-```
-
-Open your browser at: [http://localhost:8000](http://localhost:8000)
-
----
-
-## Project Structure
-
-```
-project/
-│
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── add_student.html
-│   ├── update_student.html
-│
-├── app.py
-├── requirements.txt
-└── .env
-```
-
----
-
-## Screenshots
-
-**Home Page**
-Lists all students with Edit/Delete buttons.
-- <img width="1902" height="607" alt="image" src="https://github.com/user-attachments/assets/a58a6a6d-4978-4769-8074-232e4d31e69d" />
-
-
-**Add Student**
-Form to add a new student.
-- <img width="1897" height="801" alt="image" src="https://github.com/user-attachments/assets/d65d25c3-ebb5-410a-adb1-e130ad7c5878" />
-
-
-**Update Student**
-Form pre-filled with student details.
-- <img width="1905" height="897" alt="image" src="https://github.com/user-attachments/assets/04febf01-879f-431f-ab07-abcfb993acf1" />
-
-
-
----
-
-## Notes
-
-* Make sure MongoDB is running and accessible via the URI in `.env`
-* Delete action includes a confirmation page to prevent accidental deletion
-* Uses `ObjectId` from `bson` to work with MongoDB document IDs
-* If you use MongoDB Atlas on macOS, install dependencies again (`pip install -r requirements.txt`). This project now uses `certifi` CA bundle explicitly to avoid common TLS certificate verification failures with `pymongo`.
-
----
-
-## License
-
-MIT License
-
----
-
 
 
