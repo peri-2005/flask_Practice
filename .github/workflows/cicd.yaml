@@ -1,0 +1,84 @@
+name: Python Application CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+  release:
+    types: [published]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+
+      - name: Run Tests
+        run: |
+          pytest
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build Application Package
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package
+          path: dist/
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package
+
+      - name: Deploy to Staging
+        env:
+          STAGING_API_TOKEN: ${{ secrets.STAGING_API_TOKEN }}
+        run: |
+          echo "Deploying build artifact to Staging Environment..."
+          # Replace this line with your actual staging deployment script/command
+
+  deploy-production:
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package
+
+      - name: Deploy to Production
+        env:
+          PROD_API_TOKEN: ${{ secrets.PROD_API_TOKEN }}
+        run: |
+          echo "Deploying build artifact to Production Environment..."
+          # Replace this line with your actual production deployment script/command
